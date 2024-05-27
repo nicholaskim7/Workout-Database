@@ -170,20 +170,20 @@ def currPr():
     #create a cursor
     c = conn.cursor()
 
-    c.execute("SELECT *, oid FROM workouts")
+    c.execute("SELECT exercise, weight FROM workouts")
     records = c.fetchall()
 
-    pool = {}
-    print_records = ""
+    max_weights = {}
     for record in records:
-        if record[1] not in pool:
-            pool[record[1]] = record[2]
-        else:
-            if pool[record[1]] < record[2]:
-                pool[record[1]] = record[2]
+        workout_name = record[0]
+        weight = int(record[1])
 
-    for key, value in pool.items():
-        print_records += f"{key:<20} {value:<10}" + "\n"
+        if workout_name not in max_weights or max_weights[workout_name] < weight:
+            max_weights[workout_name] = weight
+
+    print_records = ""
+    for key, value in max_weights.items():
+        print_records += f"{key:<20} {value:<10}\n"
 
     pr_label = Label(prPage, text= print_records, justify=CENTER)
     pr_label.grid(row = 1, column = 0, columnspan=6, pady=10)
@@ -297,19 +297,19 @@ delete_box_label.grid(row = 9, column = 0, pady=5)
 
 #create submit button
 submit_button = Button(root, text= 'Add record to database', command=submit)
-submit_button.grid(row=6, column= 0, columnspan = 2, pady = 10, padx = 10, ipadx = 110)
+submit_button.grid(row=6, column= 0, columnspan = 2, pady = 10, padx = 10, ipadx = 109)
 
 #create a query button
 query_button = Button(root, text='Show records', command= query)
 query_button.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 135)
 
 #create a delete button
-delete_button = Button(root, text='Delete record', command= delete)
-delete_button.grid(row = 11, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 136)
+delete_button = Button(root, text='Delete record (select id)', command= delete)
+delete_button.grid(row = 11, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 109)
 
 #create a edit button
-edit_button = Button(root, text='Edit record', command= edit)
-edit_button.grid(row = 12, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 142)
+edit_button = Button(root, text='Edit record (select id)', command= edit)
+edit_button.grid(row = 12, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 115)
 
 pr_button = Button(root, text='PR check', command= currPr)
 pr_button.grid(row = 13, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 147)
