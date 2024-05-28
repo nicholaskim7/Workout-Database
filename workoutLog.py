@@ -246,9 +246,6 @@ def getByDate():
         text_widget.insert(END, formatted_record + "\n")
         text_widget.insert(END, "-"*70 + "\n")
 
-    #query_label.config(text=print_records)
-    #query_label.grid(row = 13, column = 0, columnspan=6, pady=10)
-
     #commit changes to database
     conn.commit()
     #close connection
@@ -275,7 +272,7 @@ def query():
     scrollbar.pack(side = RIGHT, fill= Y)
 
     # Add a text widget to the frame
-    text_widget = Text(text_frame, yscrollcommand=scrollbar.set)
+    text_widget = Text(text_frame, yscrollcommand=scrollbar.set, bg='gray33', fg='white')
     text_widget.pack(fill=BOTH, expand=1)
     
     # Configure the scrollbar to work with the text widget
@@ -295,7 +292,6 @@ def query():
     by_date_button.grid(row = 1, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 136)
 
 
-
     #create a database or connect to one
     conn = sqlite3.connect('workout_log.db')
     #create a cursor
@@ -311,10 +307,6 @@ def query():
         #print_records += formatted_record + "\n"
         text_widget.insert(END, formatted_record+ "\n")
         text_widget.insert(END, "-"*70+"\n")
-
-    # query_label = Label(popup, text= print_records, justify=CENTER, bg= 'gray32', fg= 'white')
-    # query_label.grid(row = 13, column = 0, columnspan=6, pady=10)
-    # query_label.configure(font= ("Comic Sans MS", 11))
 
     #commit changes to database
     conn.commit()
