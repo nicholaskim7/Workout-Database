@@ -4,7 +4,7 @@
 in workoutlog.py
 1. Download Tkinter library
 2. Import sqlite3
-3. Uncomment lines 15-22 to create your table (after the first run you will have your table in your database and you can comment it out again)
+3. Uncomment lines 17-23 to create your table (after the first run you will have your table in your database and you can comment it out again)
 
 **Usage:**
 1. After you created your table in step 3 of prerequisites and commented it out run workoutLog.py
