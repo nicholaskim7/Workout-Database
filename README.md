@@ -18,6 +18,7 @@ in workoutlog.py
 5. Delete workout (enter unique id in the select id entry and show all workouts after. It will be gone)
 6. Show current Personal Records which shows your max weight lifted for each exercise present in the database
 7. Scrollbar for ease of use when database gets large
+8. Randomized daily quotes for motivation. Every time the application is re-opened a random quote from a hand-full will be selected.
 
 **Why I made this app:**
 1. It is difficult to find a workout tracker application that will fit strictly to my needs
