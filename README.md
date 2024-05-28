@@ -13,10 +13,11 @@ in workoutlog.py
 **Functionality:**
 1. Add new workout
 2. Show all workouts
-3. Show workouts of a specific date
-4. Edit workout info (enter unique id in select id entry and update info)
-5. Delete workout (enter unique id in select id entry delete and show all workouts it will be gone)
-6. Show current Personal Records
+3. Show workouts by a specific date
+4. Edit workout info (enter unique id in the select id entry and update info)
+5. Delete workout (enter unique id in the select id entry and show all workouts after. It will be gone)
+6. Show current Personal Records which shows your max weight lifted for each exercise present in the database
+7. Scrollbar for ease of use when database gets large
 
 **Why I made this app:**
 1. It is difficult to find a workout tracker application that will fit strictly to my needs
