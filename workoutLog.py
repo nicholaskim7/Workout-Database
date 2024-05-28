@@ -4,7 +4,8 @@ import sqlite3
 
 root = Tk()
 root.title('workouts')
-root.geometry('600x500')
+root.geometry('650x500')
+root.configure(background='gray25')
 
 #create a database or connect to one
 conn = sqlite3.connect('workout_log.db')
@@ -74,6 +75,7 @@ def edit():
     editor = Tk()
     editor.title('Update a record')
     editor.geometry('600x500')
+    editor.configure(background='gray25')
 
     #create a database or connect to one
     conn = sqlite3.connect('workout_log.db')
@@ -93,27 +95,27 @@ def edit():
     global reps_editor
 
     #create text boxes
-    date_editor = Entry(editor, width = 30)
+    date_editor = Entry(editor, width = 30, bg= 'gray32')
     date_editor.grid(row = 0, column = 1, padx = 20, pady = (10,0))
-    exercise_editor = Entry(editor, width = 30)
+    exercise_editor = Entry(editor, width = 30, bg= 'gray32')
     exercise_editor.grid(row = 1, column = 1)
-    weight_editor = Entry(editor, width = 30)
+    weight_editor = Entry(editor, width = 30, bg= 'gray32')
     weight_editor.grid(row = 2, column = 1)
-    set_num_editor = Entry(editor, width = 30)
+    set_num_editor = Entry(editor, width = 30, bg= 'gray32')
     set_num_editor.grid(row = 3, column = 1)
-    reps_editor = Entry(editor, width = 30)
+    reps_editor = Entry(editor, width = 30, bg= 'gray32')
     reps_editor.grid(row = 4, column = 1)
 
     #create text box labels
-    date_editor_label = Label(editor, text= 'Date')
+    date_editor_label = Label(editor, text= 'Date', bg= 'gray25', fg= 'white')
     date_editor_label.grid(row = 0, column = 0, pady = (10,0))
-    exercise_editor_label = Label(editor, text= 'Exercise name')
+    exercise_editor_label = Label(editor, text= 'Exercise name', bg= 'gray25', fg= 'white')
     exercise_editor_label.grid(row = 1, column = 0)
-    weight_editor_label = Label(editor, text='Weight (lbs)')
+    weight_editor_label = Label(editor, text='Weight (lbs)', bg= 'gray25', fg= 'white')
     weight_editor_label.grid(row = 2, column = 0)
-    set_num_editor_label = Label(editor, text= 'Set number')
+    set_num_editor_label = Label(editor, text= 'Set number', bg= 'gray25', fg= 'white')
     set_num_editor_label.grid(row = 3, column = 0)
-    reps_editor_label = Label(editor, text='Number of reps')
+    reps_editor_label = Label(editor, text='Number of reps', bg= 'gray25', fg= 'white')
     reps_editor_label.grid(row = 4, column = 0)
 
     #loop through results
@@ -125,7 +127,7 @@ def edit():
         reps_editor.insert(0, record[4])
 
     #create a save button
-    edit_button = Button(editor, text='Save record', command= update)
+    edit_button = Button(editor, text='Save record', command= update, bg= 'gray32', fg= 'white')
     edit_button.grid(row = 5, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 145)
 
 
@@ -163,7 +165,8 @@ def submit():
 def currPr():
     prPage = Tk()
     prPage.title('Personal records')
-    prPage.geometry('600x500')
+    prPage.geometry('500x400')
+    prPage.configure(background='gray25')
 
     #create a database or connect to one
     conn = sqlite3.connect('workout_log.db')
@@ -185,14 +188,41 @@ def currPr():
     for key, value in max_weights.items():
         print_records += f"{key:<20} {value:<10}\n"
 
-    pr_label = Label(prPage, text= print_records, justify=CENTER)
+    pr_label = Label(prPage, text= print_records, justify=CENTER, bg= 'gray32', fg= 'white')
     pr_label.grid(row = 1, column = 0, columnspan=6, pady=10)
+    pr_label.configure(font=("Comic Sans MS", 11))
 
     #commit changes to database
     conn.commit()
 
     #close connection
     conn.close()
+
+
+#randomized daily quote function
+def quote():
+    #create a database or connect to one
+    conn = sqlite3.connect('workout_log.db')
+    #create a cursor
+    c = conn.cursor()
+
+    quotes = ["Opportunities don't come knocking at the door. They present themselves when you knock the door down.", 
+              "Perseverance will always override potential.", "Take what's yours. You can't expect someone else to give it to you.", 
+              "Perseverance: every day showing up hitting your dues.", "Progression is the key to happiness.",
+              "When you have a belief in something, then all of a sudden what you're doing actually has purpose and that makes it very valuable.",
+              "Plant those seeds in the ground that you want to bear fruits from."]
+    
+    random_quote = random.choice(quotes)
+
+    quote_label = Label(root, text= random_quote, justify=CENTER, bg= 'gray25', fg= 'white', wraplength=500)
+    quote_label.grid(row = 14, column = 0, columnspan=6, pady=10)
+    quote_label.configure(font= ("Comic Sans MS", 12))
+
+    #commit changes to database
+    conn.commit()
+    #close connection
+    conn.close()
+quote()
 
 
 def getByDate():
@@ -207,14 +237,16 @@ def getByDate():
     c.execute("SELECT date, exercise, weight, set_num, reps, oid FROM workouts WHERE date = ?", (date_id,))
     records = c.fetchall()
 
-    query_label.config(text="")
+    #query_label.config(text="")
+    text_widget.delete('1.0', END)
 
-    print_records = ""
+    
     for record in records:
         formatted_record = f"Date: {record[0]:<15} Exercise: {record[1]:<20} Weight: {record[2]:<10} Set number: {record[3]:<10} Reps: {record[4]:<5} ID: {record[5]}"
-        print_records += formatted_record + "\n"
+        text_widget.insert(END, formatted_record + "\n")
+        text_widget.insert(END, "-"*70 + "\n")
 
-    query_label.config(text=print_records)
+    #query_label.config(text=print_records)
     #query_label.grid(row = 13, column = 0, columnspan=6, pady=10)
 
     #commit changes to database
@@ -225,12 +257,44 @@ def getByDate():
 
 #create query function
 def query():
-    global query_label
+    global text_widget
+    #global query_label
     global date_box
     global popup
     popup = Tk()
     popup.title('records')
     popup.geometry('600x500')
+    popup.configure(background='gray25')
+
+    #frame for text
+    text_frame = Frame(popup)
+    text_frame.pack(fill=BOTH, expand= 0)
+
+    #scroll bar
+    scrollbar = Scrollbar(text_frame)
+    scrollbar.pack(side = RIGHT, fill= Y)
+
+    # Add a text widget to the frame
+    text_widget = Text(text_frame, yscrollcommand=scrollbar.set)
+    text_widget.pack(fill=BOTH, expand=1)
+    
+    # Configure the scrollbar to work with the text widget
+    scrollbar.config(command=text_widget.yview)
+
+    #frame for date entry query
+    date_frame = Frame(popup, bg='gray25')
+    date_frame.pack(fill=X)
+
+    date_box = Entry(date_frame, width = 20, bg= 'gray32')
+    date_box.grid(row = 0, column= 1, pady=5)
+    date_box_label = Label(date_frame, text= 'Select date', bg= 'gray25', fg= 'sky blue')
+    date_box_label.grid(row = 0, column = 0, pady=5)
+    date_box_label.config(font= ('Arial', 10))
+
+    by_date_button = Button(date_frame, text= 'show records by date', justify=CENTER, command= getByDate, bg= 'gray32', fg= 'white')
+    by_date_button.grid(row = 1, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 136)
+
+
 
     #create a database or connect to one
     conn = sqlite3.connect('workout_log.db')
@@ -242,20 +306,15 @@ def query():
     records = c.fetchall()
 
     #loop through results
-    print_records = ""
     for record in records:
         formatted_record = f"Date: {record[0]:<15} Exercise: {record[1]:<20} Weight: {record[2]:<10} Set number: {record[3]:<10} Reps: {record[4]:<5} ID: {record[5]}"
-        print_records += formatted_record + "\n"
+        #print_records += formatted_record + "\n"
+        text_widget.insert(END, formatted_record+ "\n")
+        text_widget.insert(END, "-"*70+"\n")
 
-    query_label = Label(popup, text= print_records, justify=CENTER)
-    query_label.grid(row = 13, column = 0, columnspan=6, pady=10)
-
-    date_box = Entry(popup, width = 20)
-    date_box.grid(row = 14, column= 1, pady=5)
-    date_box_label = Label(popup, text= 'Select date')
-    date_box_label.grid(row = 14, column = 0, pady=5)
-    by_date_button = Button(popup, text= 'show records by date', justify=CENTER, command= getByDate)
-    by_date_button.grid(row = 15, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 136)
+    # query_label = Label(popup, text= print_records, justify=CENTER, bg= 'gray32', fg= 'white')
+    # query_label.grid(row = 13, column = 0, columnspan=6, pady=10)
+    # query_label.configure(font= ("Comic Sans MS", 11))
 
     #commit changes to database
     conn.commit()
@@ -265,53 +324,54 @@ def query():
 
 
 #create text boxes
-date = Entry(root, width = 30)
+date = Entry(root, width = 30, bg= 'gray32')
 date.grid(row = 0, column = 1, padx = 20, pady = (10,0))
-exercise = Entry(root, width = 30)
+exercise = Entry(root, width = 30, bg= 'gray32')
 exercise.grid(row = 1, column = 1)
-weight = Entry(root, width = 30)
+weight = Entry(root, width = 30, bg= 'gray32')
 weight.grid(row = 2, column = 1)
-set_num = Entry(root, width = 30)
+set_num = Entry(root, width = 30, bg= 'gray32')
 set_num.grid(row = 3, column = 1)
-reps = Entry(root, width = 30)
+reps = Entry(root, width = 30, bg= 'gray32')
 reps.grid(row = 4, column = 1)
 
-delete_box = Entry(root, width = 20)
+delete_box = Entry(root, width = 20, bg= 'gray32')
 delete_box.grid(row = 9, column= 1, pady=5)
 
 
 #create text box labels
-date_label = Label(root, text= 'Date')
+date_label = Label(root, text= 'Date', bg= 'gray25', fg= 'white')
 date_label.grid(row = 0, column = 0, pady = (10,0))
-exercise_label = Label(root, text= 'Exercise name')
+exercise_label = Label(root, text= 'Exercise name', bg= 'gray25', fg= 'white')
 exercise_label.grid(row = 1, column = 0)
-weight_label = Label(root, text='Weight (lbs)')
+weight_label = Label(root, text='Weight (lbs)', bg= 'gray25', fg= 'white')
 weight_label.grid(row = 2, column = 0)
-set_num_label = Label(root, text= 'Set number')
+set_num_label = Label(root, text= 'Set number', bg= 'gray25', fg= 'white')
 set_num_label.grid(row = 3, column = 0)
-reps_label = Label(root, text='Number of reps')
+reps_label = Label(root, text='Number of reps', bg= 'gray25', fg= 'white')
 reps_label.grid(row = 4, column = 0)
 
-delete_box_label = Label(root, text= 'Select ID')
+delete_box_label = Label(root, text= 'Select ID', fg= 'sky blue', bg= 'gray25')
 delete_box_label.grid(row = 9, column = 0, pady=5)
+delete_box_label.config(font= ('Arial', 10))
 
 #create submit button
-submit_button = Button(root, text= 'Add record to database', command=submit)
+submit_button = Button(root, text= 'Add record to database', command=submit, bg= 'gray32', fg= 'white')
 submit_button.grid(row=6, column= 0, columnspan = 2, pady = 10, padx = 10, ipadx = 109)
 
 #create a query button
-query_button = Button(root, text='Show records', command= query)
+query_button = Button(root, text='Show records', command= query, bg= 'gray32', fg= 'white')
 query_button.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 135)
 
 #create a delete button
-delete_button = Button(root, text='Delete record (select id)', command= delete)
+delete_button = Button(root, text='Delete record (select id)', command= delete, bg= 'gray32', fg= 'white')
 delete_button.grid(row = 11, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 109)
 
 #create a edit button
-edit_button = Button(root, text='Edit record (select id)', command= edit)
+edit_button = Button(root, text='Edit record (select id)', command= edit, bg= 'gray32', fg= 'white')
 edit_button.grid(row = 12, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 115)
 
-pr_button = Button(root, text='PR check', command= currPr)
+pr_button = Button(root, text='PR check', command= currPr, bg= 'gray32', fg= 'white')
 pr_button.grid(row = 13, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx = 147)
 
 #commit changes to database
