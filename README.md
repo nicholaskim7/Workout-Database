@@ -25,3 +25,9 @@ in workoutlog.py
 2. I wanted to avoid the premium fees and advertisements present on most workout trackers
 3. Made it easy to use and most importantly not overly complicated.
 
+![databaseworkouthome](https://github.com/user-attachments/assets/cdc50b59-52ee-4978-841f-fc636fcad542)
+![databaseworkoutshowrecords](https://github.com/user-attachments/assets/ed8e78ee-e778-46ab-90a8-bd61107e65d6)
+![databaseworkoutsPRCHECK](https://github.com/user-attachments/assets/f06f3bbf-0fff-49e3-a6d2-e6d4351992b9)
+
+
+
